@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:sportsworld/widgets/product_form.dart';
+import 'package:sportsworld/widgets/left_drawer.dart';
 
 class MyHomePage extends StatelessWidget {
   MyHomePage({super.key});
@@ -10,7 +12,7 @@ class MyHomePage extends StatelessWidget {
   final List<ItemHomepage> items = [
     ItemHomepage("All Products", Icons.shopping_bag, Colors.blue, "You have pressed the All Products button"),
     ItemHomepage("My Products", Icons.shopping_cart, Colors.green, "You have pressed the My Products button"),
-    ItemHomepage("CreateProducts", Icons.create, Colors.red, "You have pressed the Create Products button"),
+    ItemHomepage("Create Products", Icons.create, Colors.red, "You have pressed the Create Products button"),
   ];
 
   @override
@@ -19,17 +21,37 @@ class MyHomePage extends StatelessWidget {
     return Scaffold(
       // AppBar adalah bagian atas halaman yang menampilkan judul.
       appBar: AppBar(
-        // Judul aplikasi "Football News" dengan teks putih dan tebal.
-        title: const Text(
-          'SportsWorld',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
+        title: RichText(
+          text: const TextSpan(
+            children: [
+              TextSpan(
+                text: 'Sports',
+                style: TextStyle(
+                  color: Colors.green,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 22,
+                ),
+              ),
+              TextSpan(
+                text: 'World',
+                style: TextStyle(
+                  color: Colors.blue,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 22,
+                ),
+              ),
+            ],
           ),
         ),
-        // Warna latar belakang AppBar diambil dari skema warna tema aplikasi.
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: Colors.grey[300],
+        elevation: 4,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(20),
+          ),
+        ),
       ),
+      drawer: const LeftDrawer(), 
       // Body halaman dengan padding di sekelilingnya.
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -38,13 +60,26 @@ class MyHomePage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             // Row untuk menampilkan 3 InfoCard secara horizontal.
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                InfoCard(title: 'NPM', content: npm),
-                InfoCard(title: 'Name', content: nama),
-                InfoCard(title: 'Class', content: kelas),
-              ],
+            LayoutBuilder(
+              builder: (context, constraints) {
+                final isNarrow = constraints.maxWidth < 600;
+                final cards = [
+                  InfoCard(title: 'NPM', content: npm),
+                  InfoCard(title: 'Name', content: nama),
+                  InfoCard(title: 'Class', content: kelas),
+                ];
+                return isNarrow
+                    ? Wrap(
+                        alignment: WrapAlignment.center,
+                        spacing: 12,
+                        runSpacing: 12,
+                        children: cards,
+                      )
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: cards,
+                      );
+              },
             ),
 
             // Memberikan jarak vertikal 16 unit.
@@ -60,7 +95,7 @@ class MyHomePage extends StatelessWidget {
                   const Padding(
                     padding: EdgeInsets.only(top: 16.0),
                     child: Text(
-                      'Selamat datang di Football News',
+                      'Welcome to SportsWorld', 
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 18.0,
@@ -77,6 +112,7 @@ class MyHomePage extends StatelessWidget {
                     crossAxisCount: 3,
                     // Agar grid menyesuaikan tinggi kontennya.
                     shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(), 
 
                     // Menampilkan ItemCard untuk setiap item dalam list items.
                     children: items.map((ItemHomepage item) {
@@ -107,10 +143,13 @@ class InfoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       // Membuat kotak kartu dengan bayangan dibawahnya.
-      elevation: 2.0,
+      elevation: 3.0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20), 
+      ),
       child: Container(
         // Mengatur ukuran dan jarak di dalam kartu.
-        width: MediaQuery.of(context).size.width / 3.5, // menyesuaikan dengan lebar device yang digunakan.
+        constraints: const BoxConstraints(minWidth: 160, maxWidth: 280), 
         padding: const EdgeInsets.all(16.0),
         // Menyusun title dan content secara vertikal.
         child: Column(
@@ -150,7 +189,7 @@ class ItemCard extends StatelessWidget {
       // Menentukan warna latar belakang dari tema aplikasi.
       color: item.color,
       // Membuat sudut kartu melengkung.
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(20), 
 
       child: InkWell(
         // Aksi ketika kartu ditekan.
@@ -159,6 +198,13 @@ class ItemCard extends StatelessWidget {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(SnackBar(content: Text(item.message)));
+
+          if (item.name == "Create Products") {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const ProductFormPage()),
+            );
+          }
         },
         // Container untuk menyimpan Icon dan Text
         child: Container(

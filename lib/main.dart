@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:sportsworld/menu.dart';
 
-
 void main() {
   runApp(const MyApp());
 }
-
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -19,7 +17,7 @@ class MyApp extends StatelessWidget {
         // This is the theme of your application.
         //
         // TRY THIS: Try running your application with "flutter run". You'll see
-    // try changing the seedColor in the colorScheme below to Colors.green
+        // try changing the seedColor in the colorScheme below to Colors.green
         // and then invoke "hot reload" (save your changes or press the "hot
         // reload" button in a Flutter-supported IDE, or press "r" if you used
         // the command line to start the app).
@@ -30,11 +28,11 @@ class MyApp extends StatelessWidget {
         //
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
-         colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue)
+        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue)
             .copyWith(secondary: Colors.blueAccent[400]),
         useMaterial3: false,
       ),
-      home: MyHomePage(),
+      home: MyHomePage(), 
     );
   }
 }
