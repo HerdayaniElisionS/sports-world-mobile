@@ -1,0 +1,73 @@
+import 'dart:convert';
+
+List<ProductEntry> productEntryFromJson(String str) =>
+    List<ProductEntry>.from(
+      json.decode(str).map((x) => ProductEntry.fromJson(x)),
+    );
+
+String productEntryToJson(List<ProductEntry> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
+class ProductEntry {
+  ProductEntry({
+    required this.model,
+    required this.pk,
+    required this.fields,
+  });
+
+  String model;
+  int pk;
+  ProductFields fields;
+
+  factory ProductEntry.fromJson(Map<String, dynamic> json) => ProductEntry(
+        model: json["model"],
+        pk: json["pk"],
+        fields: ProductFields.fromJson(json["fields"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "model": model,
+        "pk": pk,
+        "fields": fields.toJson(),
+      };
+}
+
+class ProductFields {
+  ProductFields({
+    required this.name,
+    required this.price,
+    required this.description,
+    required this.thumbnail,
+    required this.category,
+    required this.isFeatured,
+    this.user,
+  });
+
+  String name;
+  int price;
+  String description;
+  String thumbnail;
+  String category;
+  bool isFeatured;
+  int? user;
+
+  factory ProductFields.fromJson(Map<String, dynamic> json) => ProductFields(
+        name: json["name"],
+        price: json["price"],
+        description: json["description"],
+        thumbnail: json["thumbnail"],
+        category: json["category"],
+        isFeatured: json["is_featured"],
+        user: json["user"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "name": name,
+        "price": price,
+        "description": description,
+        "thumbnail": thumbnail,
+        "category": category,
+        "is_featured": isFeatured,
+        "user": user,
+      };
+}

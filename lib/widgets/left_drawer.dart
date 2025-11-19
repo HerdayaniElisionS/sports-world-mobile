@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:sportsworld/menu.dart';
-import 'package:sportsworld/widgets/product_form.dart';
+import 'package:sportsworld/screens/menu.dart';
+import 'package:sportsworld/screens/product_form.dart';
+import 'package:sportsworld/screens/product_list.dart';
 
 class LeftDrawer extends StatelessWidget {
   const LeftDrawer({super.key});
@@ -8,7 +9,7 @@ class LeftDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      backgroundColor: Colors.grey[200], 
+      backgroundColor: Colors.grey[200],
       child: ListView(
         children: [
           DrawerHeader(
@@ -50,23 +51,44 @@ class LeftDrawer extends StatelessWidget {
             ),
           ),
 
+          // Home
           ListTile(
             leading: const Icon(Icons.home_outlined),
             title: const Text('Home'),
             onTap: () {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => MyHomePage()),
+                MaterialPageRoute(
+                  builder: (context) => MyHomePage(),
+                ),
               );
             },
           ),
+
+          // Product List
+          ListTile(
+            leading: const Icon(Icons.list),
+            title: const Text('Product List'),
+            onTap: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ProductListPage(),
+                ),
+              );
+            },
+          ),
+
+          // Add Product
           ListTile(
             leading: const Icon(Icons.post_add),
             title: const Text('Add Product'),
             onTap: () {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => const ProductFormPage()),
+                MaterialPageRoute(
+                  builder: (context) => const ProductFormPage(),
+                ),
               );
             },
           ),
